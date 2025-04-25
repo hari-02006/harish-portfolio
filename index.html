@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Harish Khajuria | FY Student | Software Student</title>
+  <style>
+    :root {
+      --bg-color: #f4f7fa;
+      --header-bg: #d1e2f3;
+      --text-color: #333;
+      --highlight: #1f3c88;
+      --accent: #00adb5;
+      --nav-bg: #23325c;
+      --section-bg: #fff;
+      --card-bg: #ffffff;
+    }
+
+    body.dark-mode {
+      --bg-color: #121212;
+      --header-bg: #1e1e1e;
+      --text-color: #f0f0f0;
+      --highlight: #4fc3f7;
+      --accent: #00adb5;
+      --nav-bg: #272727;
+      --section-bg: #1e1e1e;
+      --card-bg: #1f1f1f;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      background: var(--header-bg);
+      color: var(--highlight);
+      position: relative;
+    }
+
+    .dark-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--accent);
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      max-width: 1000px;
+    }
+
+    .profile-photo img {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+
+    .intro-text h1 { font-size: 2.5em; margin-bottom: 10px; }
+    .intro-text h2 { font-size: 1.2em; font-weight: 300; color: var(--highlight); }
+
+    nav {
+      background: var(--nav-bg);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      list-style: none;
+    }
+
+    nav li { margin: 10px 20px; }
+
+    nav a {
+      color: #fff;
+      font-weight: 600;
+      padding: 6px 8px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    nav a:hover {
+      background: #fff;
+      color: var(--nav-bg);
+      border-radius: 4px;
+    }
+
+    main { padding: 40px 20px; }
+
+    section {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: var(--section-bg);
+      border-radius: 12px;
+      padding: 40px 30px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    section h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: var(--highlight);
+      text-align: center;
+      position: relative;
+    }
+
+    section h2::after {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: var(--accent);
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+
+    .skills, .projects, .certificates, .hobbies {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 280px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    button {
+      padding: 10px 16px;
+      margin-top: 10px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #008a95;
+    }
+
+    #about p {
+      max-width: 700px;
+      margin: auto;
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: var(--nav-bg);
+      color: #fff;
+    }
+
+    @media (max-width: 600px) {
+      .header-content { flex-direction: column; text-align: center; }
+      .intro-text h1 { font-size: 2.2em; }
+      nav ul { flex-direction: column; }
+      nav li { margin: 8px 0; }
+      .card { width: 90%; }
+    }
+
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      color: var(--text-color);
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      position: relative;
+      text-align: left;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      color: var(--accent);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <button class="dark-toggle" onclick="toggleDarkMode()">Toggle Mode</button>
+  <div class="header-content">
+    <div class="profile-photo">
+      <img src="ol.png" alt="Harish Khajuria">
+    </div>
+    <div class="intro-text">
+      <h1>Harish Khajuria</h1>
+      <h2>FY Student | Software Engineering Student</h2>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#hobbies">Hobbies</a></li>
+    <li><a href="#certificates">Certificates</a></li>
+    <li><a href="#contact">Contact</a></li>
+    
+  </ul>
+</nav>
+
+<main>
+  <section id="about">
+    <h2>About Me</h2>
+    <p>
+      Hi! I'm <strong>Harish Khajuria</strong>, currently pursuing my first year in Software Engineering at MIT AOE.
+      I have a keen interest in Blockchain, Web3, and Layer 1 technologies. I'm passionate about learning and experimenting
+      with new tech tools and frameworks. I love to code, build side projects, and read about new innovations happening in the world of technology.
+      My current goal is to grow as a full-stack developer and dive deeper into blockchain development.
+    </p>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills">
+      <div class="card tooltip">
+        <h3>Programming</h3>
+        <p>Skilled in C, C++, HTML, CSS. Currently exploring Python and JavaScript.</p>
+      </div>
+      <div class="card tooltip">
+        <h3>Blockchain</h3>
+        <p>Understanding fundamentals of blockchain, smart contracts, and cryptocurrency systems.</p>
+      </div>
+      <div class="card tooltip">
+        <h3>Video Editing</h3>
+        <p>Experienced with tools like Filmora and CapCut for editing and animation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="card">
+        <h3>Pollution & Aquatic Life</h3>
+        <p>Led a campaign to spread awareness about water pollution. Combined online and offline events with a team of 5.</p>
+        <button onclick="document.getElementById('popup').style.display='flex'">View More</button>
+      </div>
+      <div class="card">
+        <h3>My Linux Project</h3>
+        <p>Created a simple random password generator using bash scripting and Linux terminal.</p>
+      </div>
+      <div class="card">
+        <h3>Crypto Blog</h3>
+        <p>Developed a blog that focuses on the latest trends and insights in the cryptocurrency world.</p>
+        <button><a href="#">My Blog</a></button>
+      </div>
+    </div>
+  </section>
+
+  <section id="certificates">
+    <h2>My Certificates</h2>
+    <div class="certificates">
+      <div class="card">
+        <h3>Kali Linux Basics</h3>
+        <p>Completed "Introduction to Kali Linux Basics" from Simplilearn.</p>
+        <a href="certificates/c1.pdf" target="_blank"><button>View Certificate</button></a>
+      </div>
+      <div class="card">
+        <h3>Guest Lecture on Linux OS</h3>
+        <p>Attended a guest lecture by CDAC Pune on Linux Operating System.</p>
+        <a href="certificates/c2.pdf" target="_blank"><button>View Certificate</button></a>
+      </div>
+      <div class="card">
+        <h3>Linux Essentials</h3>
+        <p>Earned certification on Linux essentials via Great Learning platform.</p>
+        <a href="certificates/c3.pdf" target="_blank"><button>View Certificate</button></a>
+      </div>
+      <div class="card">
+        <h3>Cisco NetAcad</h3>
+        <p>Completed "Introduction to Cybersecurity" from Cisco Networking Academy.</p>
+        <a href="certificates/c4.pdf" target="_blank"><button>View Certificate</button></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <h2>Education</h2>
+    <p><strong>B.Tech in Software Engineering</strong> — MIT Academy of Engineering<br>2024 – Present</p>
+    <p><strong>12th Grade</strong> — Shastri Memorial School, Jammu<br>Completed in 2023</p>
+    <p><strong>10th Grade</strong> — RMCS School, Jammu<br>Completed in 2021</p>
+  </section>
+
+  <section id="hobbies">
+    <h2>Hobbies</h2>
+    <div class="hobbies">
+      <div class="card"><p>Gaming 🎮</p></div>
+      <div class="card"><p>Exploring Blockchain 🔗</p></div>
+      <div class="card"><p>Video Editing 🎨</p></div>
+      <div class="card"><p>Reading Tech Blogs 📚</p></div>
+      <div class="card"><p>Designing UI/UX 🎨</p></div>
+      <div class="card"><p>Learning New Frameworks 🚀</p></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p><strong>Email:</strong> khajuriaharish60@gmail.com</p>
+    <p><strong>Phone:</strong> +91 60052 02981</p>
+    <p><strong>GitHub Repo:</strong> 
+      <a href="https://github.com/hari-02006/rr.git" target="_blank" style="color: var(--accent); font-weight: bold;">
+        View Project on GitHub
+      </a>
+    </p>
+    <button onclick="alert('Thanks for visiting my portfolio! 😊')">Say Hi!</button>
+  </section>
+  
+</main>
+
+<footer>
+  <p>&copy; 2025 Harish's Portfolio | Made with ❤</p>
+</footer>
+
+<script>
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+  }
+
+  const sections = document.querySelectorAll("section");
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  sections.forEach(section => observer.observe(section));
+</script>
+
+<div id="popup" class="popup-overlay">
+  <div class="modal-content">
+    <span class="close-btn" onclick="document.getElementById('popup').style.display='none'">&times;</span>
+    <h2>Pollution & Aquatic Life</h2>
+    <p><strong>Primary Research:</strong> Survey questions focused on pollutant types, public awareness, and effects on aquatic species' health and reproduction.</p>
+    <p><strong>Secondary Research:</strong> Plastic, chemical, and industrial pollutants were identified as key issues. Pollution affects biodiversity, causes habitat destruction, and leads to extinction risks.</p>
+    <p><strong>Solutions:</strong> Campaigns to raise awareness, community cleanup drives, bio-remediation techniques, and advocating for stricter environmental regulations.</p>
+    <p><strong>Group Contribution:</strong> Harish contributed to secondary research, solution development, and product development canvas. Other teammates worked on primary research, ideation, and campaign planning.</p>
+    <a href="ideation/ts.pdf" target="_blank"><button>My Project PPT</button></a>
+  </div>
+</div>
+
+</body>
+</html>
