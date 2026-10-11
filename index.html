@@ -81,6 +81,34 @@
     .intro-text h1 { font-size: 2.5em; margin-bottom: 10px; }
     .intro-text h2 { font-size: 1.2em; font-weight: 300; color: var(--highlight); }
 
+    .typed-role {
+      border-right: 2px solid var(--accent);
+      padding-right: 3px;
+      animation: caret-blink 0.8s steps(2, start) infinite;
+    }
+
+    @keyframes caret-blink {
+      to { border-color: transparent; }
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 20;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      margin: 0;
+      border-radius: 50%;
+      font-size: 1.4rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .back-to-top[hidden] {
+      display: none;
+    }
+
     nav {
       background: var(--nav-bg);
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -90,15 +118,18 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
+      gap: 4px 12px;
       list-style: none;
+      padding: 8px 12px;
     }
 
-    nav li { margin: 10px 20px; }
+    nav li { margin: 0; }
 
     nav a {
+      display: block;
       color: #fff;
       font-weight: 600;
-      padding: 6px 8px;
+      padding: 8px 10px;
       transition: background 0.3s, color 0.3s;
     }
 
@@ -108,23 +139,24 @@
       border-radius: 4px;
     }
 
-    main { padding: 40px 20px; }
+    main { padding: clamp(16px, 4vw, 40px) 20px; }
 
     section {
       max-width: 1000px;
-      margin: 40px auto;
+      margin: clamp(20px, 4vw, 40px) auto;
       background: var(--section-bg);
       border-radius: 12px;
-      padding: 40px 30px;
+      padding: clamp(22px, 5vw, 40px) clamp(16px, 4vw, 30px);
       box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
     section.visible {
-      opacity: 1;
-      transform: translateY(0);
+      animation: section-entrance 0.6s ease both;
+    }
+
+    @keyframes section-entrance {
+      from { opacity: 0.6; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     section h2 {
@@ -152,12 +184,69 @@
       gap: 20px;
     }
 
+    .project-tools {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .project-search {
+      width: min(100%, 320px);
+      padding: 10px 12px;
+      border: 1px solid #aab4c3;
+      border-radius: 6px;
+      background: var(--card-bg);
+      color: var(--text-color);
+      font: inherit;
+    }
+
+    .project-filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .project-filters button {
+      margin: 0;
+      background: var(--section-bg);
+      color: var(--highlight);
+      border: 1px solid var(--accent);
+    }
+
+    .project-filters button[aria-pressed="true"] {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .project-status {
+      flex-basis: 100%;
+      text-align: center;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     .card {
       background: var(--card-bg);
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 280px;
+      flex: 1 1 250px;
+      width: auto;
+      max-width: 320px;
       text-align: center;
       transition: transform 0.3s;
     }
@@ -166,7 +255,7 @@
       transform: translateY(-8px);
     }
 
-    button {
+    button, .button-link {
       padding: 10px 16px;
       margin-top: 10px;
       border: none;
@@ -176,9 +265,12 @@
       font-weight: bold;
       cursor: pointer;
       transition: background 0.3s;
+      display: inline-block;
+      text-decoration: none;
+      font-size: 0.95rem;
     }
 
-    button:hover {
+    button:hover, .button-link:hover {
       background: #008a95;
     }
 
@@ -196,11 +288,27 @@
     }
 
     @media (max-width: 600px) {
-      .header-content { flex-direction: column; text-align: center; }
-      .intro-text h1 { font-size: 2.2em; }
-      nav ul { flex-direction: column; }
-      nav li { margin: 8px 0; }
-      .card { width: 90%; }
+      header { padding: 82px 16px 40px; }
+      .header-content { flex-direction: column; gap: 16px; text-align: center; }
+      .profile-photo img { width: 120px; height: 120px; }
+      .intro-text h1 { font-size: clamp(1.8rem, 9vw, 2.5rem); }
+      .intro-text h2 { font-size: clamp(1rem, 4.5vw, 1.2rem); }
+      nav ul { gap: 4px; padding: 8px; }
+      nav a { padding: 8px; }
+      .card { flex-basis: 100%; max-width: 100%; }
+      .project-tools { flex-direction: column; }
+      .project-search { width: 100%; }
+      .project-filters { width: 100%; }
+      .back-to-top { right: 16px; bottom: 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
 
     .popup-overlay {
@@ -241,20 +349,22 @@
 <body>
 
 <header>
-  <button class="dark-toggle" onclick="toggleDarkMode()">Toggle Mode</button>
+  <button class="dark-toggle" type="button" aria-pressed="false" onclick="toggleDarkMode()">Use dark mode</button>
   <div class="header-content">
     <div class="profile-photo">
       <img src="ol.png" alt="Harish Khajuria">
     </div>
     <div class="intro-text">
       <h1>Harish Khajuria</h1>
-      <h2>FY Student | Software Engineering Student</h2>
+      <h2 aria-label="Software Engineering Student, interested in Blockchain and Web3, aspiring Full-Stack Developer">
+        <span class="typed-role" aria-hidden="true">Software Engineering Student</span>
+      </h2>
     </div>
   </div>
 </header>
 
 <nav>
-  <ul>
+  <ul id="site-navigation">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#projects">Projects</a></li>
@@ -297,20 +407,31 @@
 
   <section id="projects">
     <h2>Projects</h2>
+    <div class="project-tools">
+      <label class="visually-hidden" for="project-search">Search projects</label>
+      <input class="project-search" id="project-search" type="search" placeholder="Search projects..." autocomplete="off">
+      <div class="project-filters" role="group" aria-label="Filter projects by category">
+        <button type="button" data-project-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-project-filter="web" aria-pressed="false">Web</button>
+        <button type="button" data-project-filter="linux" aria-pressed="false">Linux</button>
+        <button type="button" data-project-filter="awareness" aria-pressed="false">Awareness</button>
+      </div>
+      <p class="project-status" id="project-status" aria-live="polite"></p>
+    </div>
     <div class="projects">
-      <div class="card">
+      <div class="card project-card" data-category="awareness">
         <h3>Pollution & Aquatic Life</h3>
         <p>Led a campaign to spread awareness about water pollution. Combined online and offline events with a team of 5.</p>
-        <button onclick="document.getElementById('popup').style.display='flex'">View More</button>
+        <button type="button" onclick="openProjectModal()">View More</button>
       </div>
-      <div class="card">
+      <div class="card project-card" data-category="linux">
         <h3>My Linux Project</h3>
         <p>Created a simple random password generator using bash scripting and Linux terminal.</p>
       </div>
-      <div class="card">
-        <h3><a target="_blank">Crypto Blog</a></h3>
+      <div class="card project-card" data-category="web">
+        <h3>Crypto Blog</h3>
         <p>Developed a blog that focuses on the latest trends and insights in the cryptocurrency world.</p>
-               <button> <h3><a href="https://hari-02006.github.io/blog/" target="_blank">My Blog</a></h3> </button>
+        <a class="button-link" href="https://hari-02006.github.io/blog/" target="_blank" rel="noreferrer">Visit Blog</a>
       </div>
     </div>
   </section>
@@ -369,7 +490,7 @@
         View Project on GitHub
       </a>
     </p>
-    <button onclick="alert('Thanks for visiting my portfolio! 😊')">Say Hi!</button>
+    <button type="button" onclick="alert('Thanks for visiting my portfolio! 😊')">Say Hi!</button>
   </section>
   
 </main>
@@ -378,27 +499,154 @@
   <p>&copy; 2025 Harish's Portfolio | All Rights Reserved</p>
 </footer>
 
+<button class="back-to-top" type="button" aria-label="Back to top" title="Back to top" hidden>↑</button>
+
 <script>
-  function toggleDarkMode() {
-    document.body.classList.toggle("dark-mode");
+  document.body.classList.add("js-enabled");
+
+  function getSavedTheme() {
+    try {
+      return localStorage.getItem("portfolio-theme");
+    } catch (error) {
+      console.warn("Could not read the saved theme preference.", error);
+      return null;
+    }
   }
+
+  function saveTheme(theme) {
+    try {
+      localStorage.setItem("portfolio-theme", theme);
+    } catch (error) {
+      console.warn("Could not save the theme preference.", error);
+    }
+  }
+
+  function applyTheme(isDark) {
+    document.body.classList.toggle("dark-mode", isDark);
+    const toggleButton = document.querySelector(".dark-toggle");
+    toggleButton.setAttribute("aria-pressed", String(isDark));
+    toggleButton.textContent = isDark ? "Use light mode" : "Use dark mode";
+  }
+
+  function toggleDarkMode() {
+    const isDark = !document.body.classList.contains("dark-mode");
+    applyTheme(isDark);
+    saveTheme(isDark ? "dark" : "light");
+  }
+
+  const savedTheme = getSavedTheme();
+  applyTheme(savedTheme ? savedTheme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  const roleElement = document.querySelector(".typed-role");
+  const roles = [
+    "Software Engineering Student",
+    "Blockchain & Web3 Enthusiast",
+    "Aspiring Full-Stack Developer"
+  ];
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let roleIndex = 0;
+
+  if (!reduceMotion.matches) {
+    let characterIndex = roles[roleIndex].length;
+    let deleting = true;
+
+    function typeNextRole() {
+      const currentRole = roles[roleIndex];
+      characterIndex += deleting ? -1 : 1;
+      roleElement.textContent = currentRole.slice(0, characterIndex);
+
+      if (!deleting && characterIndex === currentRole.length) {
+        deleting = true;
+        window.setTimeout(typeNextRole, 1600);
+      } else if (deleting && characterIndex === 0) {
+        deleting = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+        window.setTimeout(typeNextRole, 350);
+      } else {
+        window.setTimeout(typeNextRole, deleting ? 45 : 85);
+      }
+    }
+
+    window.setTimeout(typeNextRole, 1600);
+  }
+
+  const backToTopButton = document.querySelector(".back-to-top");
+
+  window.addEventListener("scroll", () => {
+    backToTopButton.hidden = window.scrollY < 400;
+  }, { passive: true });
+
+  backToTopButton.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: reduceMotion.matches ? "auto" : "smooth" });
+  });
+
+  function openProjectModal() {
+    const popup = document.getElementById("popup");
+    popup.style.display = "flex";
+    popup.setAttribute("aria-hidden", "false");
+  }
+
+  function closeProjectModal() {
+    const popup = document.getElementById("popup");
+    popup.style.display = "none";
+    popup.setAttribute("aria-hidden", "true");
+  }
+
+  const projectCards = Array.from(document.querySelectorAll(".project-card"));
+  const projectSearch = document.getElementById("project-search");
+  const projectStatus = document.getElementById("project-status");
+  const filterButtons = document.querySelectorAll("[data-project-filter]");
+  let activeProjectFilter = "all";
+
+  function filterProjects() {
+    const searchTerm = projectSearch.value.trim().toLowerCase();
+    let visibleCount = 0;
+
+    projectCards.forEach(card => {
+      const matchesCategory = activeProjectFilter === "all" || card.dataset.category === activeProjectFilter;
+      const matchesSearch = card.textContent.toLowerCase().includes(searchTerm);
+      const isVisible = matchesCategory && matchesSearch;
+      card.hidden = !isVisible;
+      visibleCount += Number(isVisible);
+    });
+
+    projectStatus.textContent = visibleCount === 1 ? "1 project found" : `${visibleCount} projects found`;
+  }
+
+  filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      activeProjectFilter = button.dataset.projectFilter;
+      filterButtons.forEach(filterButton => {
+        filterButton.setAttribute("aria-pressed", String(filterButton === button));
+      });
+      filterProjects();
+    });
+  });
+
+  projectSearch.addEventListener("input", filterProjects);
+  filterProjects();
 
   const sections = document.querySelectorAll("section");
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
-    });
-  }, { threshold: 0.1 });
+  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
 
-  sections.forEach(section => observer.observe(section));
+    sections.forEach(section => observer.observe(section));
+  } else {
+    sections.forEach(section => section.classList.add("visible"));
+  }
 </script>
 
-<div id="popup" class="popup-overlay">
+<div id="popup" class="popup-overlay" aria-hidden="true" onclick="if (event.target === this) closeProjectModal();">
   <div class="modal-content">
-    <span class="close-btn" onclick="document.getElementById('popup').style.display='none'">&times;</span>
+    <span class="close-btn" role="button" tabindex="0" aria-label="Close project modal" onclick="closeProjectModal()">&times;</span>
     <h2>Pollution & Aquatic Life</h2>
     <p><strong>Primary Research:</strong> Survey questions focused on pollutant types, public awareness, and effects on aquatic species' health and reproduction.</p>
     <p><strong>Secondary Research:</strong> Plastic, chemical, and industrial pollutants were identified as key issues. Pollution affects biodiversity, causes habitat destruction, and leads to extinction risks.</p>
